@@ -7,10 +7,11 @@
 //
 
 import Foundation
+import GameplayKit
 
 protocol GameMode {
-    func GameStart()
-    func GameEnd()
+    func GameStart(textbox: SKLabelNode)
+    func GameEnd(textbox: SKLabelNode)
 }
 
 class GameType : GameMode {
@@ -18,18 +19,23 @@ class GameType : GameMode {
     var hasScoreTarget : Bool
     var timeLimit : CFloat = 0.0
     var scoreTarget : CFloat = 0.0
+    var instructions = ""
+    var congratulations = ""
     
-    init() {
+    weak var gManager : GameManager?
+    
+    init(manager: GameManager?) {
         hasTimeLimit = false
         hasScoreTarget = false
+        gManager = manager
     }
     
-    func GameStart() {
-    
+    func GameStart(textbox: SKLabelNode) {
+        textbox.text = instructions
     }
     
-    func GameEnd() {
-        
+    func GameEnd(textbox: SKLabelNode) {
+        textbox.text = congratulations
     }
     
     
@@ -37,10 +43,16 @@ class GameType : GameMode {
 }
 
 class KidCrusher : GameType {
-    override init(){
-        super.init()
-        hasTimeLimit = false
-        hasScoreTarget = false
-    }
     
+    override init(manager: GameManager?){
+        super.init(manager: manager)
+        hasTimeLimit = true
+        hasScoreTarget = false
+        timeLimit = 60.0
+        instructions = "Crush as many kids as you can in sixty seconds!"
+        congratulations = "You crushed those kids! "
+    }
+    override func GameEnd(textbox: SKLabelNode) {
+        textbox.text = congratulations + "Can you crush even more next time?"
+    }
 }
