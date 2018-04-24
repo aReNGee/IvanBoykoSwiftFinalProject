@@ -29,6 +29,8 @@ class SpawnManager
         //newKid.position = CGPoint(x: CGFloat(rand), y:spawnLocation.y)
         newKid.position = CGPoint(x: spawnLocation.x, y: spawnLocation.y)
         //newKid.topOfScreen.y = newKid.position.y + 50
+        newKid.screenBounds = UIScreen.main.bounds
+        newKid.screenBounds.origin = spawnLocation
         return newKid
     }
     

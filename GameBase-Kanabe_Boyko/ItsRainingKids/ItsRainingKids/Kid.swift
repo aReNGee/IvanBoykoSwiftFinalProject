@@ -77,7 +77,7 @@ class Kid: SKSpriteNode
     
     var collided = Bool(false);
     
-    var topOfScreen = CGPoint(x:0, y:0)
+    var screenBounds = CGRect()
     
     
     
@@ -112,7 +112,20 @@ class Kid: SKSpriteNode
     }
     
     func deleteIfOffscreen() -> Bool {
-        if (collided && position.y > topOfScreen.y){
+        if (position.x < screenBounds.origin.x - screenBounds.width){
+            debugPrint(position.x, screenBounds.origin.x - screenBounds.width)
+            return true
+        }
+        if (position.x > screenBounds.origin.x + screenBounds.width) {
+            debugPrint(position.x, screenBounds.origin.x + screenBounds.width)
+            return true
+        }
+        if (position.y < screenBounds.origin.y - screenBounds.height){
+            debugPrint(position.y, screenBounds.origin.y - screenBounds.height)
+            return true
+        }
+        if (position.y > screenBounds.origin.y + screenBounds.height){
+            debugPrint(position.y, screenBounds.origin.y + screenBounds.height)
             return true
         }
         return false

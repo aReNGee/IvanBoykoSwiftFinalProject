@@ -62,15 +62,6 @@ class GameScene: SKScene {
         var counter = Int(0)
         for k in kids {
             k.updateKids()
-            if (_trampoline.isKidTouching(_position: k.position)) {
-                if (k.reverseDirection()) {
-                score += 1
-                print("score is " , score)
-                scoreText.text = "Score: \(score)"
-                }
-    
-                
-            }
             if (k.deleteIfOffscreen()){
                 markedForDeletion.append(counter)
             }
@@ -80,7 +71,10 @@ class GameScene: SKScene {
         for i in markedForDeletion {
             kids[i].removeFromParent()
             kids.remove(at: i)
+            score -= 1 //lose one point for each kid you miss
         }
+        print("score is " , score)
+        scoreText.text = "Score: \(score)"
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -95,6 +89,7 @@ class GameScene: SKScene {
                     if (k.touchInsideBounds(_position: touch.location(in: self))){
                         markedForDeletion.append(counter)
                         touchAvailable = false
+                        score += 1 //get a point for clicking on a kid
                     }
                     counter += 1
                 }
