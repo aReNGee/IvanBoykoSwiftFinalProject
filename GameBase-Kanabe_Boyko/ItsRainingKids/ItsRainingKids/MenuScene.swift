@@ -34,7 +34,13 @@ class MenuScene: SKScene {
         return text
     }()
     
-    let background = SKSpriteNode(imageNamed: "bg_kids")
+    let background = SKSpriteNode(imageNamed: "mainMenuREMIX")
+    
+    //buttons
+    var playButton1 : UIButton!
+    var playButton2 : UIButton!
+    var gameType1 : UILabel!
+    var gameType2 : UILabel!
     
     override func didMove(to view: SKView) {
         backgroundColor = SKColor.black
@@ -47,8 +53,9 @@ class MenuScene: SKScene {
         addChild(bigText)
         
         //setting the background to the center of the screen
+        background.scale(to: CGSize(width: size.width/2.2, height: size.height))
         background.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        background.scale(to: CGSize(width: size.width, height: size.height))
+        
         
         scoreText.position = CGPoint(x: size.width / 3.25, y: 55)
         bigText.position = CGPoint(x: size.width / 2, y: size.height - 80)
@@ -56,6 +63,43 @@ class MenuScene: SKScene {
         
         //setting the depth of the background to be at the back, always rendering first
         background.zPosition = -1
+        
+        playButton1 = UIButton(type: .system)
+        playButton1.setImage(UIImage(named: "boy1"), for: .normal)
+        playButton1.tintColor = .green
+        view.addSubview(playButton1)
+        playButton2 = UIButton(type: .system)
+        playButton2.setImage(UIImage(named: "girl1"), for: .normal)
+        playButton2.tintColor = .green
+        view.addSubview(playButton2)
+        
+        gameType1 = UILabel()
+        gameType1.text = "KID CRUSHER"
+        view.addSubview(gameType1)
+        gameType2 = UILabel()
+        gameType2.text = "GAME MODE IN PROGRESS"
+        view.addSubview(gameType2)
+        
+        playButton1.translatesAutoresizingMaskIntoConstraints = false
+        playButton2.translatesAutoresizingMaskIntoConstraints = false
+        gameType1.translatesAutoresizingMaskIntoConstraints = false
+        gameType2.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            
+            playButton1.topAnchor.constraint(equalTo: view.topAnchor, constant: 350),
+            playButton1.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 100),
+            
+            gameType1.topAnchor.constraint(equalTo: playButton1.topAnchor, constant: 10),
+            gameType1.leadingAnchor.constraint(equalTo: playButton1.trailingAnchor, constant: 10),
+            
+            playButton2.topAnchor.constraint(equalTo: playButton1.bottomAnchor, constant: 20),
+            playButton2.leadingAnchor.constraint(equalTo: playButton1.leadingAnchor, constant: 0),
+            
+            gameType2.topAnchor.constraint(equalTo: playButton2.topAnchor, constant: 10),
+            gameType2.leadingAnchor.constraint(equalTo: playButton2.trailingAnchor, constant: 10)
+
+            ])
         
     }
     
