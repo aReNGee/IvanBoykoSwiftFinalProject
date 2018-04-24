@@ -85,7 +85,21 @@ class GameScene: SKScene {
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
-            _trampoline.handleMovement(_position: touch.location(in: self))
+            var markedForDeletion: [Int] = []
+             var counter = Int(0)
+            debugPrint(touch.location(in: self))
+            for k in kids {
+                if (k.touchInsideBounds(_position: touch.location(in: self))){
+                    markedForDeletion.append(counter)
+                }
+                counter += 1
+            }
+            
+            //_trampoline.handleMovement(_position: touch.location(in: self))
+            for i in markedForDeletion {
+                kids[i].removeFromParent()
+                kids.remove(at: i)
+            }
         }
     }
     

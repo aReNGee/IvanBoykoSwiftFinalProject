@@ -122,4 +122,14 @@ class Kid: SKSpriteNode
         }
     }
     
+    //checks if the player touched within the bounds of the sprite
+    func touchInsideBounds(_position: CGPoint) -> Bool {
+        if (_position.y < position.y + size.height/2 && _position.y > position.y - size.height/2) {
+            if (_position.x < position.x + size.width/2 && _position.x > position.x - size.width/2) {
+                return true
+            }
+        }
+        return false
+    }
+    
 }
