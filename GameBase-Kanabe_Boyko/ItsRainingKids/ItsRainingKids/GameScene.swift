@@ -74,21 +74,14 @@ class GameScene: SKScene {
         let othertemp = temp!
         bigText.text = othertemp
         
-        
-        
         bigText.position = CGPoint(x: size.width / 2, y: size.height - 80)
 
-        Timer.scheduledTimer(timeInterval: SetGameSpeed(), target: self, selector: #selector(self.CreateNewKid), userInfo: nil, repeats: true)
+        Timer.scheduledTimer(timeInterval: gManger!.GetGameSpeed(), target: self, selector: #selector(self.CreateNewKid), userInfo: nil, repeats: true)
         
     }
     
     //sets the game speed based on the game type, if possible
-    func SetGameSpeed() -> Double {
-        guard let gSpeed = gManger?.gameType?.gameSpeed else {
-            return 0.5
-        }
-        return gSpeed
-    }
+    
     
     override func update(_ currentTime: TimeInterval)
     {

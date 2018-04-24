@@ -16,4 +16,11 @@ class GameManager
         gameType = KidCrusher(manager: self)
     }
     
+    func GetGameSpeed() -> Double {
+        guard let gSpeed = gameType?.gameSpeed else {
+            return 0.5
+        }
+        return gSpeed
+    }
+    
 }
