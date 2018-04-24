@@ -42,15 +42,18 @@ class MenuScene: SKScene {
     var gameType1 : UILabel!
     var gameType2 : UILabel!
     
+    var animatedObject : AnimatedKid!
+    
     override func didMove(to view: SKView) {
         backgroundColor = SKColor.black
         
         //background image instantiation
+        animatedObject = AnimatedKid(_position: CGPoint(x: size.width / 2, y: 360))
         
         addChild(background)
-        
-        addChild(scoreText)
-        addChild(bigText)
+        addChild(animatedObject)
+        //addChild(scoreText)
+        //addChild(bigText)
         
         //setting the background to the center of the screen
         background.scale(to: CGSize(width: size.width/2.2, height: size.height))
@@ -101,6 +104,9 @@ class MenuScene: SKScene {
 
             ])
         
+        
+        //animations stuff
+        animatedObject.Animate()
     }
     
     
