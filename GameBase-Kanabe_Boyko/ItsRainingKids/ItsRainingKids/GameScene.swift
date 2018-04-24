@@ -90,6 +90,7 @@ class GameScene: SKScene {
                         markedForDeletion.append(counter)
                         touchAvailable = false
                         score += 1 //get a point for clicking on a kid
+                        spawnParticleEffect(_position: touch.location(in: self))
                     }
                     counter += 1
                 }
@@ -111,4 +112,12 @@ class GameScene: SKScene {
         //kids.last!.position = CGPoint(x: size.width / 2, y: size.height / 2)
     }
    
+    func spawnParticleEffect(_position: CGPoint){
+        let particle = SKEmitterNode(fileNamed: "Explode.sks")
+        particle?.name = "test"
+        particle?.position = _position
+        particle?.targetNode = self
+        addChild(particle!)
+    }
+    
 }
