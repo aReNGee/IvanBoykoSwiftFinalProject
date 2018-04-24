@@ -36,17 +36,17 @@ enum KidType {
     var speed: CGFloat{
         switch self {
         case .Kid1:
-            return 2
+            return 12
         case .Kid2:
-            return 3
+            return 7
         case .Kid3:
-            return 2
+            return 8
         case .Kid4:
-            return 5
+            return 6
         case .Kid5:
-            return 3
+            return 10
         default:
-            return 2
+            return 14
         }
     }
     
@@ -73,11 +73,13 @@ class Kid: SKSpriteNode
 {
     var type: KidType
     
-    var movementSpeed = CGPoint(x: 0, y:-1)
+    var movementSpeed = CGPoint(x: 0, y:0)
     
     var collided = Bool(false);
     
     var topOfScreen = CGPoint(x:0, y:0)
+    
+    
     
     
     init(KidType: KidType) {
@@ -86,7 +88,8 @@ class Kid: SKSpriteNode
         let texture = SKTexture.init(imageNamed: type.imageName)
         super.init(texture: texture, color: .clear, size: CGSize(width: texture.size().width*3, height: texture.size().height*3))
         speed = type.speed
-        
+        zRotation = CGFloat(arc4random_uniform(360))
+        movementSpeed = CGPoint(x: cos(zRotation * CGFloat(M_PI) / 180), y: sin(zRotation * CGFloat(M_PI) / 180))
     }
     
     required init?(coder aDecoder: NSCoder) {

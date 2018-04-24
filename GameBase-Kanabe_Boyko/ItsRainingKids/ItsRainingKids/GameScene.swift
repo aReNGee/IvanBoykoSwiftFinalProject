@@ -52,7 +52,7 @@ class GameScene: SKScene {
         //initializing spawn manager
         sManager = SpawnManager(sRef: self)
         
-        Timer.scheduledTimer(timeInterval: Double(arc4random_uniform(3)+1), target: self, selector: #selector(self.CreateNewKid), userInfo: nil, repeats: false)
+        Timer.scheduledTimer(timeInterval: Double(0.3), target: self, selector: #selector(self.CreateNewKid), userInfo: nil, repeats: true)
         
     }
     
@@ -83,16 +83,21 @@ class GameScene: SKScene {
         }
     }
     
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        var touchAvailable = true
         for touch in touches {
             var markedForDeletion: [Int] = []
              var counter = Int(0)
+            
             debugPrint(touch.location(in: self))
             for k in kids {
-                if (k.touchInsideBounds(_position: touch.location(in: self))){
-                    markedForDeletion.append(counter)
+                if (touchAvailable) {
+                    if (k.touchInsideBounds(_position: touch.location(in: self))){
+                        markedForDeletion.append(counter)
+                        touchAvailable = false
+                    }
+                    counter += 1
                 }
-                counter += 1
             }
             
             //_trampoline.handleMovement(_position: touch.location(in: self))
@@ -109,7 +114,6 @@ class GameScene: SKScene {
         kids.last!.speedMultiplier(mod: score)
         addChild(kids.last!)
         //kids.last!.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        Timer.scheduledTimer(timeInterval: Double(arc4random_uniform(3)+1), target: self, selector: #selector(self.CreateNewKid), userInfo: nil, repeats: false)
     }
    
 }
