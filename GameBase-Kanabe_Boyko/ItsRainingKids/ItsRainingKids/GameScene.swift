@@ -25,9 +25,23 @@ class GameScene: SKScene {
         return text
     }()
     
+    lazy var bigText: SKLabelNode = {
+        var text = SKLabelNode(fontNamed: "Arial")
+        text.fontSize = CGFloat(40)
+        text.zPosition = 2
+        text.color = SKColor.white
+        text.horizontalAlignmentMode = .center
+        text.verticalAlignmentMode = .bottom
+        text.text = "placeholder"
+        return text
+    }()
+    
     var sManager : SpawnManager?
     
      let background = SKSpriteNode(imageNamed: "bg_kids")
+    
+    var gManger : GameManager?
+    
     
     override func didMove(to view: SKView) {
         backgroundColor = SKColor.black
@@ -37,6 +51,7 @@ class GameScene: SKScene {
         addChild(background)
         addChild(_trampoline)
         addChild(scoreText)
+        addChild(bigText)
         
         //setting the background to the center of the screen
         background.position = CGPoint(x: size.width / 2, y: size.height / 2)
@@ -51,9 +66,28 @@ class GameScene: SKScene {
         
         //initializing spawn manager
         sManager = SpawnManager(sRef: self)
+        gManger = GameManager()
+        var temp = gManger!.gameType?.GameStart()
+        print(temp!)
+        //temp = "test"
         
-        Timer.scheduledTimer(timeInterval: Double(0.3), target: self, selector: #selector(self.CreateNewKid), userInfo: nil, repeats: true)
+        let othertemp = temp!
+        bigText.text = othertemp
         
+        
+        
+        bigText.position = CGPoint(x: size.width / 2, y: size.height - 80)
+
+        Timer.scheduledTimer(timeInterval: SetGameSpeed(), target: self, selector: #selector(self.CreateNewKid), userInfo: nil, repeats: true)
+        
+    }
+    
+    //sets the game speed based on the game type, if possible
+    func SetGameSpeed() -> Double {
+        guard let gSpeed = gManger?.gameType?.gameSpeed else {
+            return 0.5
+        }
+        return gSpeed
     }
     
     override func update(_ currentTime: TimeInterval)

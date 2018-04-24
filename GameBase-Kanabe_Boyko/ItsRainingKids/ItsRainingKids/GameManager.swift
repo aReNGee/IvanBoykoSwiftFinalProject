@@ -10,7 +10,7 @@ import Foundation
 
 class GameManager
 {
-    weak var gameType : GameType?
+    var gameType : GameType?
     
     init() {
         gameType = KidCrusher(manager: self)

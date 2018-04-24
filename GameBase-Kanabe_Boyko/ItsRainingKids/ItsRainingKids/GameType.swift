@@ -10,7 +10,7 @@ import Foundation
 import GameplayKit
 
 protocol GameMode {
-    func GameStart(textbox: SKLabelNode)
+    func GameStart() -> String
     func GameEnd(textbox: SKLabelNode)
 }
 
@@ -19,8 +19,9 @@ class GameType : GameMode {
     var hasScoreTarget : Bool
     var timeLimit : CFloat = 0.0
     var scoreTarget : CFloat = 0.0
-    var instructions = ""
+    var instructions = "test"
     var congratulations = ""
+    var gameSpeed = 0.5
     
     weak var gManager : GameManager?
     
@@ -30,8 +31,8 @@ class GameType : GameMode {
         gManager = manager
     }
     
-    func GameStart(textbox: SKLabelNode) {
-        textbox.text = instructions
+    func GameStart() -> String{
+        return instructions
     }
     
     func GameEnd(textbox: SKLabelNode) {
@@ -49,6 +50,7 @@ class KidCrusher : GameType {
         hasTimeLimit = true
         hasScoreTarget = false
         timeLimit = 60.0
+        gameSpeed = 0.3
         instructions = "Crush as many kids as you can in sixty seconds!"
         congratulations = "You crushed those kids! "
     }
