@@ -42,6 +42,7 @@ class GameScene: SKScene {
     
     var gManger : GameManager?
     
+    var desiredGameType : Int?
     
     override func didMove(to view: SKView) {
         backgroundColor = SKColor.black
@@ -66,7 +67,7 @@ class GameScene: SKScene {
         
         //initializing spawn manager
         sManager = SpawnManager(sRef: self)
-        gManger = GameManager()
+        gManger = GameManager(gType: desiredGameType)
         let temp = gManger!.gameType?.GameStart()
         print(temp!)
         //temp = "test"

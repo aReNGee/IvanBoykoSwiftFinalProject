@@ -16,9 +16,9 @@ protocol GameMode {
 
 class GameType : GameMode {
     var hasTimeLimit : Bool
-    var hasScoreTarget : Bool
+    var hasMaxLives : Bool
     var timeLimit : CFloat = 0.0
-    var scoreTarget : CFloat = 0.0
+    var maxLives : Int = 0
     var instructions = "test"
     var congratulations = ""
     var gameSpeed = 0.5
@@ -27,7 +27,7 @@ class GameType : GameMode {
     
     init(manager: GameManager?) {
         hasTimeLimit = false
-        hasScoreTarget = false
+        hasMaxLives = false
         gManager = manager
     }
     
@@ -48,10 +48,26 @@ class KidCrusher : GameType {
     override init(manager: GameManager?){
         super.init(manager: manager)
         hasTimeLimit = true
-        hasScoreTarget = false
+        hasMaxLives = false
         timeLimit = 60.0
         gameSpeed = 0.3
         instructions = "Crush as many kids as you can in sixty seconds!"
+        congratulations = "You crushed those kids! "
+    }
+    override func GameEnd(textbox: SKLabelNode) {
+        textbox.text = congratulations + "Can you crush even more next time?"
+    }
+}
+
+class EndlessKids : GameType {
+    
+    override init(manager: GameManager?){
+        super.init(manager: manager)
+        hasTimeLimit = false
+        hasMaxLives = true
+        maxLives = 3
+        gameSpeed = 0.8
+        instructions = "Crush kids until you miss 3!"
         congratulations = "You crushed those kids! "
     }
     override func GameEnd(textbox: SKLabelNode) {

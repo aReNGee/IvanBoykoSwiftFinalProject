@@ -70,12 +70,12 @@ class MenuScene: SKScene {
         playButton1 = UIButton(type: .system)
         playButton1.setImage(UIImage(named: "boy1"), for: .normal)
         playButton1.tintColor = .green
-        playButton1.addTarget(self, action: #selector(ChangeScene), for: .touchUpInside)
+        playButton1.addTarget(self, action: #selector(ChangeScene1), for: .touchUpInside)
         view.addSubview(playButton1)
         playButton2 = UIButton(type: .system)
         playButton2.setImage(UIImage(named: "girl1"), for: .normal)
         playButton2.tintColor = .green
-        playButton2.addTarget(self, action: #selector(ChangeScene), for: .touchUpInside)
+        playButton2.addTarget(self, action: #selector(ChangeScene2), for: .touchUpInside)
         view.addSubview(playButton2)
         
         gameType1 = UILabel()
@@ -123,13 +123,32 @@ class MenuScene: SKScene {
         }
     }
     
-    @objc func ChangeScene(){
+    @objc func ChangeScene1(){
         let scene = GameScene(size: CGSize(width: 2048, height: 1536))
         scene.scaleMode = .aspectFill
         playButton1.removeFromSuperview()
         playButton2.removeFromSuperview()
         gameType1.removeFromSuperview()
         gameType2.removeFromSuperview()
+        
+        let gType = 1
+        
+        scene.desiredGameType = gType
+        let skView = self.view as! SKView
+        skView.presentScene(scene)
+    }
+    
+    @objc func ChangeScene2(){
+        let scene = GameScene(size: CGSize(width: 2048, height: 1536))
+        scene.scaleMode = .aspectFill
+        playButton1.removeFromSuperview()
+        playButton2.removeFromSuperview()
+        gameType1.removeFromSuperview()
+        gameType2.removeFromSuperview()
+        
+        let gType = 2
+        
+        scene.desiredGameType = gType
         let skView = self.view as! SKView
         skView.presentScene(scene)
     }

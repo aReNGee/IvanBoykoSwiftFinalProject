@@ -16,6 +16,14 @@ class GameManager
         gameType = KidCrusher(manager: self)
     }
     
+    init(gType: Int?){
+        guard gType == 1 else {
+            gameType = KidCrusher(manager: self)
+            return
+        }
+        gameType = EndlessKids(manager: self)
+    }
+    
     func GetGameSpeed() -> Double {
         guard let gSpeed = gameType?.gameSpeed else {
             return 0.5
