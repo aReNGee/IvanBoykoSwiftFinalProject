@@ -67,7 +67,7 @@ class GameScene: SKScene {
         //initializing spawn manager
         sManager = SpawnManager(sRef: self)
         gManger = GameManager()
-        var temp = gManger!.gameType?.GameStart()
+        let temp = gManger!.gameType?.GameStart()
         print(temp!)
         //temp = "test"
         

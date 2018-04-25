@@ -48,7 +48,7 @@ class MenuScene: SKScene {
         backgroundColor = SKColor.black
         
         //background image instantiation
-        animatedObject = AnimatedKid(_position: CGPoint(x: size.width / 2, y: 360))
+        animatedObject = AnimatedKid(_position: CGPoint(x: size.width / 2, y: 300))
         
         addChild(background)
         addChild(animatedObject)
@@ -70,10 +70,12 @@ class MenuScene: SKScene {
         playButton1 = UIButton(type: .system)
         playButton1.setImage(UIImage(named: "boy1"), for: .normal)
         playButton1.tintColor = .green
+        playButton1.addTarget(self, action: #selector(ChangeScene), for: .touchUpInside)
         view.addSubview(playButton1)
         playButton2 = UIButton(type: .system)
         playButton2.setImage(UIImage(named: "girl1"), for: .normal)
         playButton2.tintColor = .green
+        playButton2.addTarget(self, action: #selector(ChangeScene), for: .touchUpInside)
         view.addSubview(playButton2)
         
         gameType1 = UILabel()
@@ -121,6 +123,16 @@ class MenuScene: SKScene {
         }
     }
     
+    @objc func ChangeScene(){
+        let scene = GameScene(size: CGSize(width: 2048, height: 1536))
+        scene.scaleMode = .aspectFill
+        playButton1.removeFromSuperview()
+        playButton2.removeFromSuperview()
+        gameType1.removeFromSuperview()
+        gameType2.removeFromSuperview()
+        let skView = self.view as! SKView
+        skView.presentScene(scene)
+    }
     
     
 }
