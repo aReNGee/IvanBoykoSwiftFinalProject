@@ -12,72 +12,44 @@ import UIKit
 
 class MenuScene: SKScene {
 
-    lazy var scoreText: SKLabelNode = {
-        var text = SKLabelNode(fontNamed: "Arial")
-        text.fontSize = CGFloat(75)
-        text.zPosition = 2
-        text.color = SKColor.white
-        text.horizontalAlignmentMode = .left
-        text.verticalAlignmentMode = .bottom
-        text.text = "Score:"
-        return text
-    }()
-    
-    lazy var bigText: SKLabelNode = {
-        var text = SKLabelNode(fontNamed: "Arial")
-        text.fontSize = CGFloat(40)
-        text.zPosition = 2
-        text.color = SKColor.white
-        text.horizontalAlignmentMode = .center
-        text.verticalAlignmentMode = .bottom
-        text.text = "placeholder"
-        return text
-    }()
     
     let background = SKSpriteNode(imageNamed: "mainMenuREMIX")
     
-    //buttons
+    //UI Elements
     var playButton1 : UIButton!
     var playButton2 : UIButton!
     var gameType1 : UILabel!
     var gameType2 : UILabel!
     
+    //fancy animated menu scren item
     var animatedObject : AnimatedKid!
     
     override func didMove(to view: SKView) {
+        //setting up background
         backgroundColor = SKColor.black
-        
-        //background image instantiation
-        animatedObject = AnimatedKid(_position: CGPoint(x: size.width / 2, y: 300))
-        
-        addChild(background)
-        addChild(animatedObject)
-        //addChild(scoreText)
-        //addChild(bigText)
-        
-        //setting the background to the center of the screen
         background.scale(to: CGSize(width: size.width/2.2, height: size.height))
         background.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        
-        
-        scoreText.position = CGPoint(x: size.width / 3.25, y: 55)
-        bigText.position = CGPoint(x: size.width / 2, y: size.height - 80)
-        
-        
-        //setting the depth of the background to be at the back, always rendering first
         background.zPosition = -1
+        addChild(background)
         
+        //animated title screen character
+        animatedObject = AnimatedKid(_position: CGPoint(x: size.width / 2, y: 300))
+        addChild(animatedObject)
+        
+        //button setup
         playButton1 = UIButton(type: .system)
         playButton1.setImage(UIImage(named: "boy1"), for: .normal)
         playButton1.tintColor = .green
-        playButton1.addTarget(self, action: #selector(ChangeScene1), for: .touchUpInside)
+        playButton1.addTarget(self, action: #selector(changeScene1), for: .touchUpInside)
         view.addSubview(playButton1)
+        
         playButton2 = UIButton(type: .system)
         playButton2.setImage(UIImage(named: "girl1"), for: .normal)
         playButton2.tintColor = .green
-        playButton2.addTarget(self, action: #selector(ChangeScene2), for: .touchUpInside)
+        playButton2.addTarget(self, action: #selector(changeScene2), for: .touchUpInside)
         view.addSubview(playButton2)
         
+        //UI Setup - button labels
         gameType1 = UILabel()
         gameType1.text = "KID CRUSHER"
         view.addSubview(gameType1)
@@ -85,6 +57,8 @@ class MenuScene: SKScene {
         gameType2.text = "ENDLESS MODE"
         view.addSubview(gameType2)
         
+        
+        //constraining buttons onto the screen
         playButton1.translatesAutoresizingMaskIntoConstraints = false
         playButton2.translatesAutoresizingMaskIntoConstraints = false
         gameType1.translatesAutoresizingMaskIntoConstraints = false
@@ -107,23 +81,21 @@ class MenuScene: SKScene {
             ])
         
         
-        //animations stuff
+        //finally, tell the animated object to begin animating
         animatedObject.Animate()
     }
     
-    
-    
-    override func update(_ currentTime: TimeInterval)
-    {
-        
+    //workaround for not passing paramaters by selector
+    @objc func changeScene1(){
+        generateScene(gameType: 1)
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in touches {
-        }
+    @objc func changeScene2(){
+        generateScene(gameType: 2)
     }
     
-    @objc func ChangeScene1(){
+    //creates and navigates to a game scene with the desired game type
+    func generateScene(gameType: Int){
         let scene = GameScene(size: CGSize(width: 2048, height: 1536))
         scene.scaleMode = .aspectFill
         playButton1.removeFromSuperview()
@@ -131,22 +103,7 @@ class MenuScene: SKScene {
         gameType1.removeFromSuperview()
         gameType2.removeFromSuperview()
         
-        let gType = 1
-        
-        scene.desiredGameType = gType
-        let skView = self.view as! SKView
-        skView.presentScene(scene)
-    }
-    
-    @objc func ChangeScene2(){
-        let scene = GameScene(size: CGSize(width: 2048, height: 1536))
-        scene.scaleMode = .aspectFill
-        playButton1.removeFromSuperview()
-        playButton2.removeFromSuperview()
-        gameType1.removeFromSuperview()
-        gameType2.removeFromSuperview()
-        
-        let gType = 2
+        let gType = gameType
         
         scene.desiredGameType = gType
         let skView = self.view as! SKView

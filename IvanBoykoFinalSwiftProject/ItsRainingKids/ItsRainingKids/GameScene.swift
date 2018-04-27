@@ -4,7 +4,7 @@
 //
 //  Created by Kanabe Lucas A. on 2/28/18.
 //  Copyright © 2018 KanabeBoyko. All rights reserved.
-//
+//  Rewritten with permission by Ivan Boyko
 
 import SpriteKit
 import GameplayKit
@@ -128,11 +128,12 @@ class GameScene: SKScene {
     
     override func update(_ currentTime: TimeInterval)
     {
-        if (!gameOver){
+        if (!gameOver){ //if the game is running
+            
             var markedForDeletion: [Int] = []
             var counter = Int(0)
             for k in kids {
-                k.updateKids()
+                k.updateKids() //update objets, then mark them for deletion if they're offscreen
                 if (k.deleteIfOffscreen()){
                     markedForDeletion.append(counter)
                 }
@@ -147,9 +148,10 @@ class GameScene: SKScene {
                     livesRemaining -= 1
                 }
             }
-            print("score is " , score)
+
             scoreText.text = "Score: \(score)"
             
+            //check the time limit if we have one
             if (gManger!.gameType!.hasTimeLimit){
                 //if this is the first time we're running this, we will have no previous time
                 if (previousTime != 0){
@@ -169,6 +171,7 @@ class GameScene: SKScene {
                 
             }
             
+            //check how many lives are remaining, if we have them
             if (gManger!.gameType!.hasMaxLives){
                 loseConditionText.text = "Lives Remaining: \(livesRemaining)"
                 if (livesRemaining <= 0){
@@ -184,14 +187,13 @@ class GameScene: SKScene {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
-            if (!gameOver){
-                var touchAvailable = true
+            if (!gameOver){ //if the game is running
+                var touchAvailable = true //only one kid can be tapped in a single touch
                 var markedForDeletion: [Int] = []
                 var counter = Int(0)
-                
-                debugPrint(touch.location(in: self))
+
                 for k in kids {
-                    if (touchAvailable) {
+                    if (touchAvailable) { //iterates through the kids and checks if its tapped on their location
                         if (k.touchInsideBounds(_position: touch.location(in: self))){
                             markedForDeletion.append(counter)
                             touchAvailable = false
@@ -201,8 +203,7 @@ class GameScene: SKScene {
                         counter += 1
                     }
                 }
-                
-                
+
                 for i in markedForDeletion {
                     kids[i].removeFromParent()
                     kids.remove(at: i)
@@ -218,6 +219,7 @@ class GameScene: SKScene {
         }
     }
     
+    //function that creates a new kid. Mostly handled in SpawnManger
     @objc func CreateNewKid(){
         if (!gameOver){
             kids.append(sManager!.spawnKid())
@@ -226,6 +228,7 @@ class GameScene: SKScene {
         }
     }
    
+    //function that spawns explosion particle effects at a specific location
     func spawnParticleEffect(_position: CGPoint){
         let particle = SKEmitterNode(fileNamed: "Explode.sks")
         particle?.name = "test"

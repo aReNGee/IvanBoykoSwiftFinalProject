@@ -4,7 +4,7 @@
 //
 //  Created by Kanabe Lucas A. on 2/28/18.
 //  Copyright © 2018 KanabeBoyko. All rights reserved.
-//
+//  Rewritten with permission by Ivan Boyko
 
 import UIKit
 import SpriteKit
@@ -15,9 +15,6 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         let scene = MenuScene(size: CGSize(width: 2048, height: 1536))
         let skView = self.view as! SKView
-        //skView.showsFPS = true
-        //skView.showsNodeCount = true
-       //skView.ignoresSiblingOrder = true
         scene.scaleMode = .aspectFill
         skView.presentScene(scene)
         
