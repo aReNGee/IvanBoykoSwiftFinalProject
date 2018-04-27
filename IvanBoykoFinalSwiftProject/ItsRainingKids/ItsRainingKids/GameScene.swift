@@ -122,7 +122,7 @@ class GameScene: SKScene {
         }
         
         //timed function that spawns kids on a a regular interval (speed varies by game type)
-        Timer.scheduledTimer(timeInterval: gManger!.GetGameSpeed(), target: self, selector: #selector(self.CreateNewKid), userInfo: nil, repeats: true)
+        Timer.scheduledTimer(timeInterval: gManger!.getGameSpeed(), target: self, selector: #selector(self.CreateNewKid), userInfo: nil, repeats: true)
     }
     
     
@@ -133,8 +133,8 @@ class GameScene: SKScene {
             var markedForDeletion: [Int] = []
             var counter = Int(0)
             for k in kids {
-                k.updateKids() //update objets, then mark them for deletion if they're offscreen
-                if (k.deleteIfOffscreen()){
+                k.updateKid() //update objets, then mark them for deletion if they're offscreen
+                if (k.checkIfOffscreen()){
                     markedForDeletion.append(counter)
                 }
                 counter += 1
@@ -223,7 +223,6 @@ class GameScene: SKScene {
     @objc func CreateNewKid(){
         if (!gameOver){
             kids.append(sManager!.spawnKid())
-            kids.last!.speedMultiplier(mod: score)
             addChild(kids.last!)
         }
     }

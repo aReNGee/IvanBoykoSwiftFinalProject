@@ -21,14 +21,11 @@ class SpawnManager
         sceneRef = sRef
         spawnLocation = CGPoint(x: sceneRef!.size.width/2, y: sceneRef!.size.height/2)
         standardDeviation = UInt32(sceneRef!.size.width/4 - sceneRef!.size.width/10)
-        //print(standardDeviation)
     }
     
     func spawnKid() -> Kid{
-        let newKid = FactoryKid.createKid(specificType: nil)
-        //newKid.position = CGPoint(x: CGFloat(rand), y:spawnLocation.y)
+        let newKid = FactoryKid.createKid(specificType: nil) //uses the factory to generate a kid
         newKid.position = CGPoint(x: spawnLocation.x, y: spawnLocation.y)
-        //newKid.topOfScreen.y = newKid.position.y + 50
         newKid.screenBounds = UIScreen.main.bounds
         newKid.screenBounds.origin = spawnLocation
         return newKid

@@ -31,10 +31,9 @@ class KidFactory {
     }
     
     func createKid(specificType: KidType?) -> Kid {
-        
-        guard let sType = specificType else {
+        //if we aren't given a specific kind of kid to make, generate a random one
+        guard let sType = specificType else { 
             let rand = Int(arc4random_uniform(5))
-            //print(rand)
             let randKidType = KidType(value: rand)!
             return GenerateKid(randKidType)
         }

@@ -11,12 +11,9 @@ import Foundation
 class GameManager
 {
     var gameType : GameType?
+
     
-    init() {
-        gameType = KidCrusher(manager: self)
-    }
-    
-    init(gType: Int?){
+    init(gType: Int?){ //when GameManager is created, set the desired game type
         guard gType == 1 else {
             gameType = EndlessKids(manager: self)
             return
@@ -24,7 +21,7 @@ class GameManager
         gameType = KidCrusher(manager: self)
     }
     
-    func GetGameSpeed() -> Double {
+    func getGameSpeed() -> Double { //simple geter for game speed with default value
         guard let gSpeed = gameType?.gameSpeed else {
             return 0.5
         }

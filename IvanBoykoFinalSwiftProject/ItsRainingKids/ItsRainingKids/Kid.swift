@@ -9,6 +9,7 @@
 import Foundation
 import SpriteKit
 
+//KidType determines many of the elements of the kid, including speed, sprite, and name
 enum KidType {
     case Kid1
     case Kid2
@@ -71,23 +72,22 @@ enum KidType {
 
 class Kid: SKSpriteNode
 {
+    //initial variables
     var type: KidType
-    
     var movementSpeed = CGPoint(x: 0, y:0)
-    
-    var collided = Bool(false);
-    
+    var collided : Bool = false
     var screenBounds = CGRect()
     
-    
-    
-    
     init(KidType: KidType) {
-        type = KidType
+        type = KidType //first, assign the desired kid type
         
-        let texture = SKTexture.init(imageNamed: type.imageName)
+        let texture = SKTexture.init(imageNamed: type.imageName) //choose the texture based on the type
         super.init(texture: texture, color: .clear, size: CGSize(width: texture.size().width*3, height: texture.size().height*3))
+        
+        //set speed based on kid type
         speed = type.speed
+        
+        //choose a random rotation, and generate its movement vector based on speed times direction
         zRotation = CGFloat(arc4random_uniform(360))
         movementSpeed = CGPoint(x: cos(zRotation * CGFloat(M_PI) / 180), y: sin(zRotation * CGFloat(M_PI) / 180))
     }
@@ -96,46 +96,25 @@ class Kid: SKSpriteNode
         fatalError("init(coder:) has not been implemented")
     }
     
-    func updateKids(){
+    func updateKid(){ //all we're currently doing in update is moving the kid
         position = CGPoint (x: position.x + (speed * movementSpeed.x), y: position.y + (speed * movementSpeed.y))
         
     }
     
-    func reverseDirection() -> Bool {
-        if (!collided){
-            collided = true;
-            movementSpeed = CGPoint(x: movementSpeed.x * -1, y: movementSpeed.y * -1);
-            return true
-        } else {
-            return false
-        }
-    }
-    
-    func deleteIfOffscreen() -> Bool {
+    func checkIfOffscreen() -> Bool { //checks the current location against the screen bounds. returns true if the kid is offscreen
         if (position.x < screenBounds.origin.x - screenBounds.width){
-            debugPrint(position.x, screenBounds.origin.x - screenBounds.width)
             return true
         }
         if (position.x > screenBounds.origin.x + screenBounds.width) {
-            debugPrint(position.x, screenBounds.origin.x + screenBounds.width)
             return true
         }
         if (position.y < screenBounds.origin.y - screenBounds.height){
-            debugPrint(position.y, screenBounds.origin.y - screenBounds.height)
             return true
         }
         if (position.y > screenBounds.origin.y + screenBounds.height){
-            debugPrint(position.y, screenBounds.origin.y + screenBounds.height)
             return true
         }
         return false
-    }
-    
-    func speedMultiplier(mod: Int){
-        if (mod > 10){
-            let newMod = mod / 10
-            speed *= CGFloat(newMod)
-        }
     }
     
     //checks if the player touched within the bounds of the sprite
