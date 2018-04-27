@@ -10,18 +10,28 @@ import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene {
-    //variable that will hold our falling objects
+    ///variable initialization///
+    
+    //manager variables
+    var sManager : SpawnManager?
+    var gManger : GameManager?
+    var desiredGameType : Int?
+    
+    //variable that will hold our objects
     var kids: [Kid] = []
-    var _trampoline = Trampoline()
-    var score = Int(0)
     
+    let background = SKSpriteNode(imageNamed: "bg_kids")
+    
+    //defined by game mode
     var timer : CFloat = 0
-    
     var livesRemaining : Int = 0
     
+    //gameplay variables
+    var score = Int(0)
+    var previousTime : TimeInterval = 0
     var gameOver = false;
     
-    var previousTime : TimeInterval = 0
+    ///UI elements///
     
     lazy var scoreText: SKLabelNode = {
         var text = SKLabelNode(fontNamed: "Arial")
@@ -34,7 +44,7 @@ class GameScene: SKScene {
         return text
     }()
     
-    lazy var bigText: SKLabelNode = {
+    lazy var rulesText: SKLabelNode = {
         var text = SKLabelNode(fontNamed: "Arial")
         text.fontSize = CGFloat(40)
         text.zPosition = 2
@@ -67,65 +77,53 @@ class GameScene: SKScene {
         return text
     }()
     
-    var sManager : SpawnManager?
-    
-     let background = SKSpriteNode(imageNamed: "bg_kids")
-    
-    var gManger : GameManager?
-    
-    var desiredGameType : Int?
+    ///Initialization///
     
     override func didMove(to view: SKView) {
-        backgroundColor = SKColor.black
         
-        //background image instantiation
-        
-        addChild(background)
-        addChild(_trampoline)
-        addChild(scoreText)
-        addChild(bigText)
-        addChild(loseConditionText)
-        
-        
-        //setting the background to the center of the screen
-        background.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        background.scale(to: CGSize(width: size.width, height: size.height))
-        _trampoline.position = CGPoint(x: size.width / 2, y: size.height / 7)
-        _trampoline.zPosition = -0.5
-        scoreText.position = CGPoint(x: size.width / 3.25, y: 55)
-        loseConditionText.position = CGPoint(x: size.width/2, y: 55)
-        gameOverText.position = CGPoint(x: size.width/2, y: size.height/2)
-       
-        
-        //setting the depth of the background to be at the back, always rendering first
-        background.zPosition = -1
-        
-        //initializing spawn manager
+        //initializing managers
         sManager = SpawnManager(sRef: self)
         gManger = GameManager(gType: desiredGameType)
+        
+        //setting up the background and UI
+        addChild(background)
+        backgroundColor = SKColor.black
+        background.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        background.scale(to: CGSize(width: size.width, height: size.height))
+        background.zPosition = -1
+        
+        addChild(scoreText)
+        scoreText.position = CGPoint(x: size.width / 3.25, y: 55)
+        
+        gameOverText.position = CGPoint(x: size.width/2, y: size.height/2)
+        //game over text is not added to the scene until the game is over
+        
+        addChild(rulesText)
+        rulesText.position = CGPoint(x: size.width / 2, y: size.height - 80)
         let temp = gManger!.gameType?.GameStart()
         print(temp!)
         //temp = "test"
         
-        let othertemp = temp!
-        bigText.text = othertemp
+        //let othertemp = temp!
+        rulesText.text = temp!
+
+        addChild(loseConditionText)
+        loseConditionText.position = CGPoint(x: size.width/2, y: 55)
         
-        bigText.position = CGPoint(x: size.width / 2, y: size.height - 80)
+        ///setting up the game rules///
         
         //set the time limit, if the game mode has one
         if (gManger!.gameType!.hasTimeLimit){
             timer = gManger!.gameType!.timeLimit
         }
-        
+        //set the max lives, if the game mode uses them
         if (gManger!.gameType!.hasMaxLives){
             livesRemaining = gManger!.gameType!.maxLives
         }
-
-        Timer.scheduledTimer(timeInterval: gManger!.GetGameSpeed(), target: self, selector: #selector(self.CreateNewKid), userInfo: nil, repeats: true)
         
+        //timed function that spawns kids on a a regular interval (speed varies by game type)
+        Timer.scheduledTimer(timeInterval: gManger!.GetGameSpeed(), target: self, selector: #selector(self.CreateNewKid), userInfo: nil, repeats: true)
     }
-    
-    //sets the game speed based on the game type, if possible
     
     
     override func update(_ currentTime: TimeInterval)
@@ -204,7 +202,7 @@ class GameScene: SKScene {
                     }
                 }
                 
-                //_trampoline.handleMovement(_position: touch.location(in: self))
+                
                 for i in markedForDeletion {
                     kids[i].removeFromParent()
                     kids.remove(at: i)

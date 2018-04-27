@@ -82,7 +82,7 @@ class MenuScene: SKScene {
         gameType1.text = "KID CRUSHER"
         view.addSubview(gameType1)
         gameType2 = UILabel()
-        gameType2.text = "GAME MODE IN PROGRESS"
+        gameType2.text = "ENDLESS MODE"
         view.addSubview(gameType2)
         
         playButton1.translatesAutoresizingMaskIntoConstraints = false
