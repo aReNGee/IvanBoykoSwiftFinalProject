@@ -18,10 +18,10 @@ class GameManager
     
     init(gType: Int?){
         guard gType == 1 else {
-            gameType = KidCrusher(manager: self)
+            gameType = EndlessKids(manager: self)
             return
         }
-        gameType = EndlessKids(manager: self)
+        gameType = KidCrusher(manager: self)
     }
     
     func GetGameSpeed() -> Double {
